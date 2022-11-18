@@ -1,0 +1,23 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "DragonLiveLink",
+	"Description": "LiveLink Source for receiving Camera movement from DragonBridge",
+	"Category": "Animation",
+	"CreatedBy": "RIT Motion Picture Science",
+	"CreatedByURL": "https://flipphillips.com",
+	"DocsURL": "https://docs.unrealengine.com/en-US/Engine/Animation/LiveLinkPlugin/index.html",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"Installed": false,
+	"Modules": [
+	    {
+      "Name": "DragonLiveLink",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ]
+}
