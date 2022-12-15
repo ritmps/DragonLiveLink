@@ -36,11 +36,11 @@ FDragonLiveLinkSource::FDragonLiveLinkSource(FIPv4Endpoint InEndpoint)
     UE_LOG(LogTemp, Warning, TEXT("%s"), *version);
 	// defaults
 	DeviceEndpoint = InEndpoint;
-    FIPv4Address::Parse("0.0.0.0", DeviceEndpoint.Address);
-    DeviceEndpoint.Port = 55535;
+    FIPv4Address::Parse("127.0.0.1", DeviceEndpoint.Address);
+    DeviceEndpoint.Port = 8888;
 
 	SourceStatus = LOCTEXT("SourceStatus_DeviceNotFound", "Device Not Found");
-	SourceType = LOCTEXT("DragonLiveLinkSourceType", "RMG MRMC LiveLink");
+	SourceType = LOCTEXT("DragonLiveLinkSourceType", "Dragonbridge LiveLink");
 	SourceMachineName = LOCTEXT("DragonLiveLinkSourceMachineName", "localhost");
 
 	//setup socket
