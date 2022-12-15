@@ -17,8 +17,8 @@ void SDragonLiveLinkSourceFactory::Construct(const FArguments& Args)
 
 	FIPv4Endpoint Endpoint;
 //	Endpoint.Address = FIPv4Address::Any;
-	FIPv4Address::Parse("0.0.0.0", Endpoint.Address);
-	Endpoint.Port = 55535;
+	FIPv4Address::Parse("127.0.0.1", Endpoint.Address);
+	Endpoint.Port = 8888; //defaults in Dragon
 
 	ChildSlot
 	[

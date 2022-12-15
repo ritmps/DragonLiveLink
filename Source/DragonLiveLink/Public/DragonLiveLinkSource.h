@@ -46,7 +46,7 @@ struct RobotData {
 	float zoom = 0.0f;
 };
 
-class DragonLIVELINK_API FDragonLiveLinkSource : public ILiveLinkSource, public FRunnable
+class DRAGONLIVELINK_API FDragonLiveLinkSource : public ILiveLinkSource, public FRunnable
 {
 public:
 
