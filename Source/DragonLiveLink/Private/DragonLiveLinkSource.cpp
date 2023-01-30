@@ -37,7 +37,7 @@ FDragonLiveLinkSource::FDragonLiveLinkSource(FIPv4Endpoint InEndpoint)
 	// defaults
 	DeviceEndpoint = InEndpoint;
     FIPv4Address::Parse("127.0.0.1", DeviceEndpoint.Address);
-    DeviceEndpoint.Port = 8888;
+    DeviceEndpoint.Port = 55533;
 
 	SourceStatus = LOCTEXT("SourceStatus_DeviceNotFound", "Device Not Found");
 	SourceType = LOCTEXT("DragonLiveLinkSourceType", "Dragonbridge LiveLink");
@@ -123,10 +123,13 @@ bool FDragonLiveLinkSource::RequestSourceShutdown()
 
 void FDragonLiveLinkSource::Start()
 {
-	ThreadName = "Dragon UDP Receiver ";
+	ThreadName = "Dragon UDP Receiver";
 	ThreadName.AppendInt(FAsyncThreadIndex::GetNext());
 	
 	Thread = FRunnableThread::Create(this, *ThreadName, 128 * 1024, TPri_AboveNormal, FPlatformAffinity::GetPoolThreadMask());
+    
+    UE_LOG(LogTemp, Warning, TEXT("Starting"));
+
 }
 
 void FDragonLiveLinkSource::Stop()
@@ -396,6 +399,29 @@ void FDragonLiveLinkSource::HandleReceivedData(TSharedPtr<TArray<uint8>, ESPMode
 		JsonString += TCHAR(Byte);
 	}
 
+    UE_LOG(LogTemp, Warning, TEXT("ReceivedData: %s"), *JsonString);
+
+    // Keepalive message
+    TSharedPtr<FJsonObject> JsonObject;
+	TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(JsonString);
+	if (FJsonSerializer::Deserialize(Reader, JsonObject))
+	{
+		for (TPair<FString, TSharedPtr<FJsonValue>>& JsonField : JsonObject->Values)
+		{
+			FName KeyName(*JsonField.Key);
+
+            if (KeyName == "event" && JsonField.Value->AsString() == "hello") {
+                UE_LOG(LogTemp, Warning, TEXT("Handshake"));
+                
+                int32 Sent;
+	            Socket->SendTo(Writer.GetData(), Writer.Num(), Sent, *Source);
+                return;
+            }
+ 			//const TArray<TSharedPtr<FJsonValue>>& BoneArray = JsonField.Value->AsArray();
+        }
+    }
+
+    
 	if (ReceivedData->Num() > 35) {
 		memcpy(&Robot_Data, ReceivedData->GetData(), 36);
 	}
